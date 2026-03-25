@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "69c07a075ac49e3f8dac06ec",
+    "fullName": "Local User",
+    "email": "local-1774221831848@example.com",
+    "password": "$2b$10$7omHjlwl0MgAKO4cpF6ksezUofqZr/rxMO09feyUUavI.1wKZ8Bai",
+    "avatarUrl": null,
+    "authProvider": "local",
+    "googleId": null,
+    "plan": "free",
+    "isVerified": true,
+    "lastLoginAt": "2026-03-22T23:23:52.055Z",
+    "emailVerificationOTP": null,
+    "emailVerificationOTPExpires": null,
+    "trialUploadsUsed": 0,
+    "trialUploadsLimit": 3,
+    "isTrialActive": true,
+    "createdAt": "2026-03-22T23:23:51.852Z",
+    "updatedAt": "2026-03-22T23:23:52.057Z"
+  }
+]

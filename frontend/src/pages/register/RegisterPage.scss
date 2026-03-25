@@ -1,0 +1,209 @@
+@use '../../app/styles/scene';
+
+.register-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.register-layout {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 480px);
+  align-items: center;
+  gap: 2rem;
+}
+
+.register-copy h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.register-copy__lede {
+  max-width: 40rem;
+  margin: 1.4rem 0 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.register-copy__stats {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.register-copy__stats article {
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+}
+
+.register-copy__stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.register-copy__stats p {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.register-card {
+  position: relative;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: calc(var(--radius-xl) + 4px);
+  background:
+    radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 22%),
+    rgba(5, 10, 18, 0.86);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.register-card__header h2 {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: -0.05em;
+}
+
+.register-card__header p {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+}
+
+.register-card__badge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.register-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.otp-panel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  border-radius: 1.45rem;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.08), rgba(245, 158, 11, 0.06));
+}
+
+.otp-panel__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+}
+
+.otp-panel strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: #edf5ff;
+}
+
+.otp-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.dev-note {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dev-note strong {
+  color: var(--accent);
+  letter-spacing: 0.18em;
+}
+
+.register-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.page-status {
+  margin: 1rem 0 0;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.page-status--success {
+  border-color: rgba(94, 234, 212, 0.32);
+  color: #d5fff8;
+}
+
+.page-status--error {
+  border-color: rgba(251, 113, 133, 0.32);
+  color: #ffd4dd;
+}
+
+.page-link-row {
+  margin: 1rem 0 0;
+  color: var(--muted);
+}
+
+.page-link-row a {
+  color: var(--accent);
+}
+
+@media (max-width: 980px) {
+  .register-layout {
+    grid-template-columns: 1fr;
+    padding: 2rem 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .register-layout {
+    width: min(100%, calc(100% - 1rem));
+  }
+
+  .register-actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,47 @@
+.text-field {
+  position: relative;
+  display: block;
+}
+
+.text-field input {
+  width: 100%;
+  min-height: 4.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.6rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(1, 6, 15, 0.72);
+  color: var(--text);
+  padding: 0 1.35rem;
+  outline: none;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.text-field__action {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: inline-flex;
+}
+
+.text-field:has(.text-field__action) input {
+  padding-right: 4.2rem;
+}
+
+.text-field input::placeholder {
+  color: #d7def0;
+  opacity: 0.8;
+  text-transform: lowercase;
+}
+
+.text-field input:focus {
+  border-color: rgba(103, 232, 249, 0.7);
+  box-shadow: 0 0 0 4px rgba(103, 232, 249, 0.1);
+  transform: translateY(-1px);
+}
+
+.text-field input[readonly] {
+  opacity: 0.75;
+}

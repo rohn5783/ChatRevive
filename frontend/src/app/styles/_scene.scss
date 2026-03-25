@@ -1,0 +1,67 @@
+.ambient {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(10px);
+  animation: float 12s ease-in-out infinite;
+}
+
+.ambient-one {
+  top: -12rem;
+  left: -8rem;
+  width: 24rem;
+  height: 24rem;
+  background: radial-gradient(circle, rgba(103, 232, 249, 0.28), transparent 68%);
+}
+
+.ambient-two {
+  right: -10rem;
+  bottom: -10rem;
+  width: 28rem;
+  height: 28rem;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18), transparent 66%);
+  animation-delay: -4s;
+}
+
+.ambient-three {
+  top: 35%;
+  right: 18%;
+  width: 16rem;
+  height: 16rem;
+  background: radial-gradient(circle, rgba(125, 211, 252, 0.12), transparent 64%);
+  animation-delay: -7s;
+}
+
+.ambient-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at center, black 45%, transparent 90%);
+  opacity: 0.28;
+}
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  animation: spin 18s linear infinite;
+}
+
+.orbit-ring--one {
+  top: 8%;
+  right: -8rem;
+  width: 24rem;
+  height: 24rem;
+}
+
+.orbit-ring--two {
+  left: -10rem;
+  bottom: 4%;
+  width: 18rem;
+  height: 18rem;
+  animation-direction: reverse;
+  animation-duration: 24s;
+}

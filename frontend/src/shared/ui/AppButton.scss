@@ -1,0 +1,35 @@
+.app-button {
+  position: relative;
+  min-height: 4.1rem;
+  border: 1px solid transparent;
+  border-radius: 1.6rem;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+
+.app-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.app-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.app-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.app-button--primary {
+  background: linear-gradient(135deg, var(--accent), #22d3ee 46%, #fbbf24 100%);
+  color: #041019;
+  box-shadow: 0 20px 40px rgba(34, 211, 238, 0.25);
+}
+
+.app-button--secondary,
+.app-button--ghost {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text);
+}
