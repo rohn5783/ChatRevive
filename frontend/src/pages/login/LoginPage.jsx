@@ -2,56 +2,13 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../app/providers/useAuth.js'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
+import { PasswordToggle } from '../../shared/ui/PasswordToggle.jsx'
 import { TextField } from '../../shared/ui/TextField.jsx'
 import './LoginPage.scss'
 
 const initialLoginState = {
   email: '',
   password: '',
-}
-
-function PasswordToggle({ visible, onToggle }) {
-  return (
-    <button
-      type="button"
-      className="field-toggle"
-      onClick={onToggle}
-      aria-label={visible ? 'Hide password' : 'Show password'}
-      aria-pressed={visible}
-    >
-      {visible ? (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M3 4.5 19.5 21M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 5.6A10.9 10.9 0 0 1 12 5.4c5.4 0 9.1 5.1 9.8 6.1-.4.6-1.7 2.4-3.8 3.9M6.5 7.1C4.4 8.6 3.1 10.4 2.7 11c.7 1 4.4 6.1 9.3 6.1 1 0 1.9-.1 2.7-.4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M2.7 12S6.4 5.9 12 5.9 21.3 12 21.3 12 17.6 18.1 12 18.1 2.7 12 2.7 12Z"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-          />
-        </svg>
-      )}
-    </button>
-  )
 }
 
 export function LoginPage() {

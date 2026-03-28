@@ -24,6 +24,7 @@
   right: 1rem;
   transform: translateY(-50%);
   display: inline-flex;
+  z-index: 2;
 }
 
 .text-field:has(.text-field__action) input {
@@ -44,4 +45,120 @@
 
 .text-field input[readonly] {
   opacity: 0.75;
+}
+
+.field-toggle {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #d9e7ff;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.field-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--hover-rainbow);
+  background-size: 220% 220%;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.field-toggle:hover {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(103, 232, 249, 0.45);
+  box-shadow: 0 12px 28px rgba(34, 211, 238, 0.18);
+}
+
+.field-toggle:hover::before {
+  opacity: 0.24;
+  animation: auroraShift 2.6s linear infinite;
+}
+
+.field-toggle:focus-visible {
+  outline: none;
+  border-color: rgba(103, 232, 249, 0.7);
+  box-shadow: 0 0 0 4px rgba(103, 232, 249, 0.12);
+}
+
+.field-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.password-toggle__icon {
+  overflow: visible;
+}
+
+.password-toggle__eye,
+.password-toggle__pupil,
+.password-toggle__lid,
+.password-toggle__slash {
+  transform-origin: center;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    stroke-dashoffset 260ms ease;
+}
+
+.password-toggle__eye,
+.password-toggle__lid,
+.password-toggle__slash {
+  stroke-dasharray: 1;
+}
+
+.password-toggle.is-hidden .password-toggle__eye {
+  opacity: 0.72;
+}
+
+.password-toggle.is-hidden .password-toggle__pupil {
+  opacity: 0;
+  transform: scaleY(0.25);
+}
+
+.password-toggle.is-hidden .password-toggle__lid {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transform: translateY(0.2px);
+}
+
+.password-toggle.is-hidden .password-toggle__slash {
+  opacity: 1;
+  stroke-dashoffset: 0;
+}
+
+.password-toggle.is-visible .password-toggle__eye {
+  opacity: 1;
+}
+
+.password-toggle.is-visible .password-toggle__pupil {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.password-toggle.is-visible .password-toggle__lid {
+  opacity: 0;
+  stroke-dashoffset: 1;
+  transform: translateY(-2px);
+}
+
+.password-toggle.is-visible .password-toggle__slash {
+  opacity: 0;
+  stroke-dashoffset: 1;
 }

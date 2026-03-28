@@ -45,6 +45,8 @@
 }
 
 .workspace-link {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   min-height: 4.1rem;
@@ -54,6 +56,30 @@
   color: var(--text);
   text-decoration: none;
   background: rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.workspace-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hover-rainbow);
+  background-size: 220% 220%;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.workspace-link:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 34px rgba(34, 211, 238, 0.16);
+}
+
+.workspace-link:hover::before {
+  opacity: 0.2;
+  animation: auroraShift 2.8s linear infinite;
 }
 
 .chat-grid {
@@ -172,6 +198,8 @@
 }
 
 .chat-media-card {
+  position: relative;
+  isolation: isolate;
   display: grid;
   gap: 0.55rem;
   width: min(100%, 24rem);
@@ -182,6 +210,30 @@
   color: inherit;
   text-decoration: none;
   text-align: left;
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.chat-media-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hover-rainbow);
+  background-size: 240% 240%;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.chat-media-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(17, 33, 22, 0.2);
+  box-shadow: 0 18px 36px rgba(34, 211, 238, 0.16);
+}
+
+.chat-media-card:hover::before {
+  opacity: 0.14;
+  animation: auroraShift 3s linear infinite;
 }
 
 .chat-media-card--image {
@@ -256,6 +308,18 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.chat-lightbox__close:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 12px 24px rgba(34, 211, 238, 0.18);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)),
+    var(--hover-rainbow);
+  background-size: 100% 100%, 220% 220%;
+  animation: auroraShift 2.8s linear infinite;
 }
 
 .chat-thread__empty {

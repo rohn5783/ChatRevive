@@ -1,10 +1,15 @@
 .app-button {
   position: relative;
   min-height: 4.1rem;
+  isolation: isolate;
   border: 1px solid transparent;
   border-radius: 1.6rem;
   overflow: hidden;
-  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    opacity 180ms ease,
+    border-color 220ms ease;
 }
 
 .app-button span {
@@ -12,8 +17,53 @@
   z-index: 1;
 }
 
+.app-button::before,
+.app-button::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.app-button::before {
+  z-index: 0;
+  background: var(--hover-rainbow);
+  background-size: 220% 220%;
+  opacity: 0;
+}
+
+.app-button::after {
+  inset: auto;
+  width: 11rem;
+  height: 11rem;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.32), transparent 62%);
+  filter: blur(12px);
+  opacity: 0;
+}
+
 .app-button:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 22px 48px rgba(34, 211, 238, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.app-button:hover:not(:disabled)::before {
+  opacity: 1;
+  animation: auroraShift 2.8s linear infinite;
+}
+
+.app-button:hover:not(:disabled)::after {
+  opacity: 1;
+  animation: hoverGlow 1.8s ease-in-out infinite;
+}
+
+.app-button:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.99);
 }
 
 .app-button:disabled {
@@ -32,4 +82,8 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.12);
   color: var(--text);
+}
+
+.app-button--primary:hover:not(:disabled) {
+  color: #041019;
 }

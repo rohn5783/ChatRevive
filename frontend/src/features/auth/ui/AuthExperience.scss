@@ -97,12 +97,37 @@
 }
 
 .auth-tabs button {
+  position: relative;
+  isolation: isolate;
   border: 0;
   background: transparent;
   color: var(--muted);
   padding: 0.8rem 1.15rem;
   border-radius: 0.95rem;
-  transition: 180ms ease;
+  overflow: hidden;
+  transition: transform 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.auth-tabs button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--hover-rainbow);
+  background-size: 220% 220%;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.auth-tabs button:hover {
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+.auth-tabs button:hover::before {
+  opacity: 0.22;
+  animation: auroraShift 2.6s linear infinite;
 }
 
 .auth-tabs button.is-active {
@@ -127,30 +152,6 @@
 .auth-form__title-block p {
   margin: 0.45rem 0 0;
   color: var(--muted);
-}
-
-.field-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.65rem;
-  height: 2.65rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #d9e7ff;
-  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-}
-
-.field-toggle:hover {
-  transform: scale(1.04);
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(103, 232, 249, 0.35);
-}
-
-.field-toggle svg {
-  width: 1.1rem;
-  height: 1.1rem;
 }
 
 .otp-panel {

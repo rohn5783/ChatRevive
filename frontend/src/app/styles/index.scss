@@ -12,6 +12,13 @@
   --accent-strong: #f59e0b;
   --success: #5eead4;
   --danger: #fb7185;
+  --hover-rainbow: linear-gradient(
+    120deg,
+    rgba(103, 232, 249, 0.95),
+    rgba(59, 130, 246, 0.88),
+    rgba(236, 72, 153, 0.88),
+    rgba(245, 158, 11, 0.95)
+  );
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
   --radius-xl: 34px;
   --radius-lg: 24px;
@@ -97,5 +104,29 @@ button {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes auroraShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes hoverGlow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
   }
 }
