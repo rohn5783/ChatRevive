@@ -107,6 +107,12 @@
   gap: 0.8rem;
   justify-items: start;
   text-align: left;
+  cursor: pointer;
+}
+
+.upload-dropzone:disabled {
+  cursor: progress;
+  opacity: 0.75;
 }
 
 .upload-dropzone__icon {
@@ -129,6 +135,23 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
+.upload-actions {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.15rem;
+}
+
+.upload-actions__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.upload-summary {
+  margin: 0;
+  color: var(--muted);
+}
+
 @media (max-width: 920px) {
   .workspace-header,
   .upload-grid {
@@ -146,6 +169,10 @@
   .workspace-header__actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .upload-actions__buttons {
+    flex-direction: column;
   }
 
   .workspace-link {
