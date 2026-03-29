@@ -3,7 +3,7 @@
 .dashboard-page {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .dashboard-shell {
@@ -12,15 +12,138 @@
   width: min(1280px, calc(100% - 2rem));
   margin: 0 auto;
   min-height: 100vh;
-  padding: 3rem 0;
+  padding: 1.25rem 0 3rem;
+}
+
+.dashboard-topbar {
+  position: sticky;
+  top: 1rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(16, 31, 46, 0.92), rgba(12, 24, 40, 0.78)),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 18px 48px rgba(3, 9, 19, 0.28);
+}
+
+.dashboard-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.dashboard-nav-toggle:hover {
+  border-color: rgba(103, 232, 249, 0.26);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.dashboard-nav-toggle span {
+  position: absolute;
+  width: 1.15rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text);
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.dashboard-nav-toggle span:nth-child(1) {
+  transform: translateY(-0.35rem);
+}
+
+.dashboard-nav-toggle span:nth-child(2) {
+  transform: translateY(0);
+}
+
+.dashboard-nav-toggle span:nth-child(3) {
+  transform: translateY(0.35rem);
+}
+
+.dashboard-nav-toggle.is-open span:nth-child(1) {
+  transform: translateY(0) rotate(45deg);
+}
+
+.dashboard-nav-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.dashboard-nav-toggle.is-open span:nth-child(3) {
+  transform: translateY(0) rotate(-45deg);
+}
+
+.dashboard-brand,
+.dashboard-topbar__nav a,
+.dashboard-cta {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.dashboard-brand {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.dashboard-topbar__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.95rem;
+}
+
+.dashboard-topbar__nav a {
+  color: var(--muted);
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.dashboard-topbar__nav a:hover {
+  color: var(--text);
+  transform: translateY(-1px);
 }
 
 .dashboard-hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: 1rem;
   margin-bottom: 2rem;
+}
+
+.dashboard-hero__copy,
+.dashboard-spotlight,
+.dashboard-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+}
+
+.dashboard-hero__copy {
+  padding: 2rem;
+  background:
+    linear-gradient(145deg, rgba(10, 24, 38, 0.95), rgba(17, 30, 47, 0.8)),
+    rgba(255, 255, 255, 0.04);
 }
 
 .dashboard-hero h1 {
@@ -39,18 +162,61 @@
   line-height: 1.8;
 }
 
+.dashboard-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.6rem;
+}
+
+.dashboard-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.7rem;
+  padding: 0 1.35rem;
+  border-radius: 1.25rem;
+}
+
+.dashboard-cta--primary {
+  background: linear-gradient(135deg, var(--accent), #22d3ee 48%, #fbbf24 100%);
+  color: #041019;
+}
+
+.dashboard-cta--secondary {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dashboard-spotlight {
+  padding: 1.55rem;
+  background:
+    radial-gradient(circle at top right, rgba(103, 232, 249, 0.18), transparent 44%),
+    rgba(255, 255, 255, 0.05);
+}
+
+.dashboard-spotlight h2 {
+  margin: 0.7rem 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+}
+
+.dashboard-spotlight p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .dashboard-card {
   padding: 1.2rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
 }
 
 .dashboard-card--primary {
@@ -94,9 +260,31 @@
   background: linear-gradient(90deg, var(--accent), var(--accent-strong));
 }
 
+.dashboard-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-card--wide {
+  min-height: 220px;
+}
+
+.dashboard-stack {
+  display: grid;
+  gap: 1rem;
+}
+
 @media (max-width: 1080px) {
-  .dashboard-grid {
+  .dashboard-hero,
+  .dashboard-grid,
+  .dashboard-detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    gap: 1rem;
   }
 }
 
@@ -105,12 +293,59 @@
     width: min(100%, calc(100% - 1rem));
   }
 
+  .dashboard-topbar {
+    top: 0.75rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    border-radius: 1.5rem;
+  }
+
+  .dashboard-nav-toggle {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .dashboard-topbar__nav {
+    display: none;
+    grid-column: 1 / -1;
+    gap: 0.65rem;
+    padding-top: 0.35rem;
+  }
+
+  .dashboard-topbar__nav.is-open {
+    display: grid;
+  }
+
+  .dashboard-topbar__nav a {
+    display: block;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .dashboard-topbar__nav a:hover {
+    transform: translateX(4px);
+  }
+
+  .app-button {
+    min-width: 100%;
+  }
+
+  .dashboard-topbar > .app-button {
+    grid-column: 1 / -1;
+  }
+
   .dashboard-hero {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
   }
 
   .dashboard-hero h1 {
     font-size: clamp(2.2rem, 11vw, 3.7rem);
+  }
+
+  .dashboard-hero__actions {
+    flex-direction: column;
   }
 }

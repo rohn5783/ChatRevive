@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import './AppButton.scss'
 
 export function AppButton({
@@ -7,14 +8,34 @@ export function AppButton({
   disabled = false,
   onClick,
 }) {
+  const prefersReducedMotion = useReducedMotion()
+
   return (
-    <button
+    <motion.button
       type={type}
       className={`app-button app-button--${variant}`}
       disabled={disabled}
       onClick={onClick}
+      whileHover={
+        disabled || prefersReducedMotion
+          ? undefined
+          : {
+              y: -2,
+              scale: 1.01,
+              transition: { duration: 0.18, ease: 'easeOut' },
+            }
+      }
+      whileTap={
+        disabled || prefersReducedMotion
+          ? undefined
+          : {
+              y: 0,
+              scale: 0.985,
+              transition: { duration: 0.12, ease: 'easeOut' },
+            }
+      }
     >
       <span>{children}</span>
-    </button>
+    </motion.button>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../app/providers/useAuth.js'
+import { MotionReveal } from '../../shared/ui/MotionReveal.jsx'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
 import { PasswordToggle } from '../../shared/ui/PasswordToggle.jsx'
 import { TextField } from '../../shared/ui/TextField.jsx'
@@ -58,8 +59,8 @@ export function LoginPage() {
       <div className="ambient ambient-two" />
       <div className="ambient-grid" />
       <div className="orbit-ring orbit-ring--one" />
-      <section className="login-layout">
-        <div className="login-copy">
+      <MotionReveal as="section" className="login-layout" mode="enter">
+        <MotionReveal as="div" className="login-copy" delay={0.06} mode="enter">
           <p className="eyebrow">ChatRevive Access</p>
           <h1>Return to the workspace where your chats become useful again.</h1>
           <p className="login-copy__lede">
@@ -76,9 +77,9 @@ export function LoginPage() {
               <p>Your account stays behind cookie-backed auth and verification checks.</p>
             </article>
           </div>
-        </div>
+        </MotionReveal>
 
-        <section className="login-card">
+        <MotionReveal as="section" className="login-card" delay={0.12} mode="enter">
           <div className="login-card__header">
             <span className="login-card__badge">Login</span>
             <h2>Welcome back</h2>
@@ -131,8 +132,8 @@ export function LoginPage() {
           <p className="page-link-row">
             Need an account? <Link to="/register">Create one here</Link>
           </p>
-        </section>
-      </section>
+        </MotionReveal>
+      </MotionReveal>
     </main>
   )
 }

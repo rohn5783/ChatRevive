@@ -11,6 +11,7 @@ import {
   clearMediaSession,
   replaceMediaFiles,
 } from '../../features/chat/model/mediaSession.js'
+import { MotionReveal } from '../../shared/ui/MotionReveal.jsx'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
 import './UploadPage.scss'
 
@@ -107,8 +108,8 @@ export function UploadPage() {
     <main className="upload-page">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
-      <section className="upload-shell">
-        <header className="workspace-header">
+      <MotionReveal as="section" className="upload-shell" mode="enter">
+        <MotionReveal as="header" className="workspace-header" delay={0.05} mode="enter">
           <div>
             <p className="eyebrow">Upload Workspace</p>
             <h1>Bring in a chat export and start shaping the archive.</h1>
@@ -132,10 +133,10 @@ export function UploadPage() {
               {isLoggingOut ? 'Signing out...' : 'Logout'}
             </AppButton>
           </div>
-        </header>
+        </MotionReveal>
 
         <section className="upload-grid">
-          <article className="upload-card upload-card--dropzone">
+          <MotionReveal as="article" className="upload-card upload-card--dropzone" delay={0.1}>
             <p className="upload-card__label">Text file upload</p>
             <h2>Drop a `.txt` export with optional media files</h2>
             <p>
@@ -188,9 +189,9 @@ export function UploadPage() {
                 </p>
               </div>
             ) : null}
-          </article>
+          </MotionReveal>
 
-          <article className="upload-card">
+          <MotionReveal as="article" className="upload-card" delay={0.16}>
             <p className="upload-card__label">Session snapshot</p>
             <h2>{user?.fullName || 'ChatRevive user'}</h2>
             <p>Plan: {user?.plan || 'free'}</p>
@@ -198,9 +199,9 @@ export function UploadPage() {
             <p>
               Trial uploads used: {user?.trialUploadsUsed ?? 0} / {user?.trialUploadsLimit ?? 3}
             </p>
-          </article>
+          </MotionReveal>
         </section>
-      </section>
+      </MotionReveal>
     </main>
   )
 }

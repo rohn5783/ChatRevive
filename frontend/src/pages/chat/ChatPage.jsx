@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { useAuth } from '../../app/providers/useAuth.js'
 import {
@@ -10,6 +11,7 @@ import {
   getMediaEntry,
   hasMediaInSession,
 } from '../../features/chat/model/mediaSession.js'
+import { MotionReveal } from '../../shared/ui/MotionReveal.jsx'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
 import './ChatPage.scss'
 
@@ -63,8 +65,8 @@ export function ChatPage() {
     <main className="chat-page">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-three" />
-      <section className="chat-shell">
-        <header className="chat-header">
+      <MotionReveal as="section" className="chat-shell" mode="enter">
+        <MotionReveal as="header" className="chat-header" delay={0.05} mode="enter">
           <div>
             <p className="eyebrow">Chat View</p>
             <h1>Review imported conversations in a calmer, searchable timeline.</h1>
@@ -84,10 +86,10 @@ export function ChatPage() {
               Logout
             </AppButton>
           </div>
-        </header>
+        </MotionReveal>
 
         <section className="chat-grid">
-          <aside className="chat-sidebar">
+          <MotionReveal as="aside" className="chat-sidebar" delay={0.1}>
             <p className="chat-sidebar__label">Active workspace</p>
             <h2>{user?.fullName || 'ChatRevive user'}</h2>
             <p>{user?.email}</p>
@@ -98,9 +100,9 @@ export function ChatPage() {
               <span>Plan: {user?.plan || 'free'}</span>
               <span>Uploaded: {new Date(chatSession.uploadedAt).toLocaleString()}</span>
             </div>
-          </aside>
+          </MotionReveal>
 
-          <section className="chat-thread">
+          <MotionReveal as="section" className="chat-thread" delay={0.16}>
             <div className="chat-thread__header">
               <p className="chat-thread__label">Imported transcript</p>
               <h2>WhatsApp-style chat</h2>
@@ -194,31 +196,47 @@ export function ChatPage() {
                 <p>Upload a WhatsApp-exported `.txt` file to see the conversation here.</p>
               </div>
             )}
-          </section>
+          </MotionReveal>
         </section>
-      </section>
+      </MotionReveal>
 
-      {activeMedia ? (
-        <div className="chat-lightbox" role="dialog" aria-modal="true">
-          <button
-            type="button"
-            className="chat-lightbox__backdrop"
-            aria-label="Close media viewer"
-            onClick={() => setActiveMedia(null)}
-          />
-          <div className="chat-lightbox__panel">
+      <AnimatePresence>
+        {activeMedia ? (
+          <motion.div
+            className="chat-lightbox"
+            role="dialog"
+            aria-modal="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
             <button
               type="button"
-              className="chat-lightbox__close"
+              className="chat-lightbox__backdrop"
+              aria-label="Close media viewer"
               onClick={() => setActiveMedia(null)}
+            />
+            <motion.div
+              className="chat-lightbox__panel"
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             >
-              Close
-            </button>
-            <img src={activeMedia.url} alt={activeMedia.fileName} />
-            <p>{activeMedia.fileName}</p>
-          </div>
-        </div>
-      ) : null}
+              <button
+                type="button"
+                className="chat-lightbox__close"
+                onClick={() => setActiveMedia(null)}
+              >
+                Close
+              </button>
+              <img src={activeMedia.url} alt={activeMedia.fileName} />
+              <p>{activeMedia.fileName}</p>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </main>
   )
 }

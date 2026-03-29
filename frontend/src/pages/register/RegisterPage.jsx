@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../app/providers/useAuth.js'
+import { MotionReveal } from '../../shared/ui/MotionReveal.jsx'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
 import { PasswordToggle } from '../../shared/ui/PasswordToggle.jsx'
 import { TextField } from '../../shared/ui/TextField.jsx'
@@ -50,8 +51,8 @@ export function RegisterPage() {
       <div className="ambient ambient-three" />
       <div className="ambient-grid" />
       <div className="orbit-ring orbit-ring--two" />
-      <section className="register-layout">
-        <div className="register-copy">
+      <MotionReveal as="section" className="register-layout" mode="enter">
+        <MotionReveal as="div" className="register-copy" delay={0.06} mode="enter">
           <p className="eyebrow">Start Fresh</p>
           <h1>Build your account and unlock a cleaner way to revisit exported chats.</h1>
           <p className="register-copy__lede">
@@ -68,9 +69,9 @@ export function RegisterPage() {
               <p>Your next stop after sign-in is a focused workspace for `.txt` imports.</p>
             </article>
           </div>
-        </div>
+        </MotionReveal>
 
-        <section className="register-card">
+        <MotionReveal as="section" className="register-card" delay={0.12} mode="enter">
           <div className="register-card__header">
             <span className="register-card__badge">Register</span>
             <h2>Create your space</h2>
@@ -122,8 +123,8 @@ export function RegisterPage() {
           <p className="page-link-row">
             Already registered? <Link to="/login">Go to login</Link>
           </p>
-        </section>
-      </section>
+        </MotionReveal>
+      </MotionReveal>
     </main>
   )
 }

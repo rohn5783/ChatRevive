@@ -26,6 +26,65 @@
   backdrop-filter: blur(18px);
 }
 
+.landing-nav-toggle {
+  display: none;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.landing-nav-toggle:hover {
+  border-color: rgba(103, 232, 249, 0.26);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.landing-nav-toggle span {
+  position: absolute;
+  width: 1.15rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text);
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.landing-nav-toggle span:nth-child(1) {
+  transform: translateY(-0.35rem);
+}
+
+.landing-nav-toggle span:nth-child(2) {
+  transform: translateY(0);
+}
+
+.landing-nav-toggle span:nth-child(3) {
+  transform: translateY(0.35rem);
+}
+
+.landing-nav-toggle.is-open span:nth-child(1) {
+  transform: translateY(0) rotate(45deg);
+}
+
+.landing-nav-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.landing-nav-toggle.is-open span:nth-child(3) {
+  transform: translateY(0) rotate(-45deg);
+}
+
 .landing-brand,
 .landing-nav a,
 .landing-cta {
@@ -46,7 +105,77 @@
 }
 
 .landing-nav a {
+  position: relative;
+  overflow: hidden;
+  padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: var(--muted);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.landing-nav a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(103, 232, 249, 0.2) 45%, transparent 100%);
+  transform: translateX(-135%);
+  transition: transform 300ms ease;
+  pointer-events: none;
+}
+
+.landing-nav a::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 0.45rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #fbbf24);
+  transform: scaleX(0.2);
+  transform-origin: center;
+  opacity: 0;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease;
+  pointer-events: none;
+}
+
+.landing-nav a:hover,
+.landing-nav a:focus-visible {
+  color: var(--text);
+  border-color: rgba(103, 232, 249, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(10, 20, 35, 0.22);
+}
+
+.landing-nav a:hover::before,
+.landing-nav a:focus-visible::before {
+  transform: translateX(135%);
+}
+
+.landing-nav a:hover::after,
+.landing-nav a:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.landing-nav__highlight {
+  border-color: rgba(103, 232, 249, 0.14);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(251, 191, 36, 0.1));
+}
+
+.landing-nav__highlight:hover,
+.landing-nav__highlight:focus-visible {
+  border-color: rgba(251, 191, 36, 0.28);
+  box-shadow: 0 16px 34px rgba(9, 18, 32, 0.28);
 }
 
 .landing-hero {
@@ -214,11 +343,182 @@
   font-family: var(--font-display);
 }
 
+.landing-social {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top right, rgba(103, 232, 249, 0.12), transparent 36%),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+}
+
+.landing-social__copy h2 {
+  margin: 0.7rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.landing-social__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.landing-social__signature {
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.landing-social__link {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.95rem;
+  row-gap: 0.3rem;
+  min-height: 7.25rem;
+  padding: 1.15rem 1.15rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  color: var(--text);
+  text-decoration: none;
+  background:
+    linear-gradient(155deg, rgba(12, 23, 37, 0.92), rgba(19, 31, 48, 0.72)),
+    rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.landing-social__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 42%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.landing-social__link::after {
+  content: '↗';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+  line-height: 1;
+  transform: translate(-4px, 4px);
+  transition:
+    transform 240ms ease,
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+.landing-social__link:hover,
+.landing-social__link:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 20px 44px rgba(8, 17, 31, 0.26),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.landing-social__link:hover::before,
+.landing-social__link:focus-visible::before {
+  opacity: 1;
+}
+
+.landing-social__link:hover::after,
+.landing-social__link:focus-visible::after {
+  color: #041019;
+  background: linear-gradient(135deg, var(--accent), #fbbf24);
+  transform: translate(0, 0);
+}
+
+.landing-social__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  grid-row: 1 / span 2;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 1rem;
+  color: #041019;
+  background: linear-gradient(135deg, #7dd3fc, #22d3ee 54%, #fde68a 100%);
+  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.landing-social__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.landing-social__link > span:last-child {
+  position: relative;
+  display: grid;
+  gap: 0.15rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.landing-social__link > span:last-child::after {
+  content: 'Join the conversation';
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-social__link:hover .landing-social__icon,
+.landing-social__link:focus-visible .landing-social__icon {
+  transform: rotate(-8deg) scale(1.08);
+  box-shadow: 0 16px 34px rgba(34, 211, 238, 0.24);
+}
+
+.landing-social__link:nth-child(1) .landing-social__icon {
+  background: linear-gradient(135deg, #e2e8f0, #94a3b8 48%, #38bdf8 100%);
+}
+
+.landing-social__link:nth-child(2) .landing-social__icon {
+  background: linear-gradient(135deg, #93c5fd, #38bdf8 52%, #2563eb 100%);
+}
+
+.landing-social__link:nth-child(3) .landing-social__icon {
+  background: linear-gradient(135deg, #f0f9ff, #7dd3fc 52%, #fbbf24 100%);
+}
+
 @media (max-width: 1024px) {
   .landing-hero,
   .landing-flow,
   .landing-grid,
-  .landing-feature-band {
+  .landing-feature-band,
+  .landing-social,
+  .landing-social__links {
     grid-template-columns: 1fr;
   }
 }
@@ -229,9 +529,14 @@
   }
 
   .landing-header {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
     border-radius: 1.6rem;
+  }
+
+  .landing-nav-toggle {
+    display: inline-flex;
   }
 
   .landing-nav,
@@ -242,6 +547,21 @@
   }
 
   .landing-nav {
+    display: none;
+    grid-column: 1 / -1;
+    gap: 0.65rem;
+    padding-top: 0.35rem;
+  }
+
+  .landing-nav.is-open {
     display: grid;
+  }
+
+  .landing-nav a {
+    display: block;
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    justify-content: center;
+    text-align: center;
   }
 }

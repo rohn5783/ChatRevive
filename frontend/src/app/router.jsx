@@ -4,6 +4,7 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from 'react-router'
+import { motion } from 'framer-motion'
 import { useAuth } from './providers/useAuth.js'
 import { LandingPage } from '../pages/landing/LandingPage.jsx'
 import { LoginPage } from '../pages/login/LoginPage.jsx'
@@ -16,10 +17,15 @@ function BootScreen() {
     <main className="app-shell">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
-      <section className="boot-card">
+      <motion.section
+        className="boot-card"
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
         <span className="boot-card__pulse" />
         <p>Restoring your ChatRevive workspace...</p>
-      </section>
+      </motion.section>
     </main>
   )
 }
