@@ -15,7 +15,7 @@ import { AppButton } from '../../shared/ui/AppButton.jsx'
 import './UploadPage.scss'
 
 export function UploadPage() {
-  const { user, logout } = useAuth()
+  const { user, logout, hydrateVerifiedUser } = useAuth()
   const navigate = useNavigate()
   const existingChatSession = getChatSession()
   const fileInputRef = useRef(null)
@@ -25,6 +25,8 @@ export function UploadPage() {
   const [uploadSummary, setUploadSummary] = useState(existingChatSession)
   const [isUploading, setIsUploading] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const isFreeUploadLimitReached =
+    user?.plan === 'free' && (user?.trialUploadsUsed ?? 0) >= (user?.trialUploadsLimit ?? 3)
 
   const handleFileChange = async (event) => {
     const selectedFiles = Array.from(event.target.files ?? [])
@@ -41,11 +43,19 @@ export function UploadPage() {
       return
     }
 
+    if (isFreeUploadLimitReached) {
+      setStatus('You have used all 3 free uploads. Upgrade to continue uploading chats.')
+      return
+    }
+
     try {
       setIsUploading(true)
       setStatus(`Uploading ${chatFile.name} and preparing the chat view...`)
 
       const response = await uploadChatFile(chatFile)
+      if (response.user) {
+        hydrateVerifiedUser(response.user)
+      }
       replaceMediaFiles(mediaFiles)
 
       const nextSummary = {
@@ -137,12 +147,14 @@ export function UploadPage() {
               type="button"
               className="upload-dropzone"
               onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading}
+              disabled={isUploading || isFreeUploadLimitReached}
             >
               <span className="upload-dropzone__icon">TXT</span>
               <span>
                 {isUploading
                   ? 'Uploading your export...'
+                  : isFreeUploadLimitReached
+                    ? 'Free plan upload limit reached'
                   : selectedFile
                     ? selectedFile.name
                     : 'Choose the chat export and any media files from your machine'}
@@ -183,7 +195,9 @@ export function UploadPage() {
             <h2>{user?.fullName || 'ChatRevive user'}</h2>
             <p>Plan: {user?.plan || 'free'}</p>
             <p>Verification: {user?.isVerified ? 'completed' : 'pending'}</p>
-            <p>Trial uploads used: {user?.trialUploadsUsed ?? 0}</p>
+            <p>
+              Trial uploads used: {user?.trialUploadsUsed ?? 0} / {user?.trialUploadsLimit ?? 3}
+            </p>
           </article>
         </section>
       </section>
