@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: chatrevive
-    env: node
-    rootDir: .
-    buildCommand: npm install --prefix backend && npm install --prefix frontend && npm --prefix frontend run build
-    startCommand: node backend/server.js

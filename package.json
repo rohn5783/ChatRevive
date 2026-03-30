@@ -4,9 +4,9 @@
   "description": "ChatRevive full-stack app",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
+     "start": "npm start --prefix backend",
     "dev": "nodemon backend/server.js",
-    "build": "cd frontend && npm run build"
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",
