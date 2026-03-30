@@ -1,12 +1,12 @@
 {
-  "name": "backend",
+  "name": "chatrevive",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "ChatRevive full-stack app",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "node tests/run-tests.js",
-    "dev": "nodemon server.js",
-    "start": "npm run dev"
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import './AppButton.scss'
 
+const MotionButton = motion.button
+
 export function AppButton({
   children,
   type = 'button',
@@ -11,7 +13,7 @@ export function AppButton({
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <motion.button
+    <MotionButton
       type={type}
       className={`app-button app-button--${variant}`}
       disabled={disabled}
@@ -36,6 +38,6 @@ export function AppButton({
       }
     >
       <span>{children}</span>
-    </motion.button>
+    </MotionButton>
   )
 }

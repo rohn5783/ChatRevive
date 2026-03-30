@@ -177,7 +177,7 @@ export function UploadPage() {
               <div className="upload-actions">
                 <div className="upload-actions__buttons">
                   <AppButton type="button" onClick={() => navigate('/chat')}>
-                    New chat
+                    View chat
                   </AppButton>
                   <AppButton type="button" variant="ghost" onClick={handleDeleteViewedChat}>
                     Delete viewed txt file

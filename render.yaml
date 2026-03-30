@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: chatrevive
+    env: node
+    rootDir: .
+    buildCommand: npm run build
+    startCommand: npm start

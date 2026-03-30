@@ -1,5 +1,26 @@
+const INVISIBLE_CHARACTER_REGEX = /[\u200b-\u200f\u202a-\u202e\u2060\ufeff]/g
+
+function sanitizeText(value = '') {
+  return String(value).replace(INVISIBLE_CHARACTER_REGEX, '').trim()
+}
+
+function normalizeMediaFileName(fileName = '') {
+  let normalizedName = sanitizeText(fileName).replace(/\\/g, '/')
+
+  try {
+    normalizedName = decodeURIComponent(normalizedName)
+  } catch {
+    // Ignore malformed URI sequences and keep the original file name.
+  }
+
+  normalizedName = normalizedName.split('/').pop() ?? normalizedName
+  normalizedName = normalizedName.replace(/^["']+|["']+$/g, '')
+
+  return normalizedName.trim()
+}
+
 function inferMediaKind(fileName = '') {
-  const normalizedName = String(fileName).trim().toLowerCase()
+  const normalizedName = normalizeMediaFileName(fileName).toLowerCase()
 
   if (/\.(jpg|jpeg|png|gif|webp|bmp|heic)$/i.test(normalizedName)) {
     return 'image'
@@ -17,13 +38,13 @@ function inferMediaKind(fileName = '') {
 }
 
 function extractMediaInfo(messageText) {
-  const trimmedText = String(messageText || '').trim()
+  const trimmedText = sanitizeText(messageText)
   const attachedMatch =
-    trimmedText.match(/^<attached:\s(.+?)>$/i) ??
+    trimmedText.match(/^<attached:\s*(.+?)>$/i) ??
     trimmedText.match(/^(.+?)\s\((?:file attached|attached)\)$/i)
 
   if (attachedMatch) {
-    const fileName = attachedMatch[1].trim()
+    const fileName = normalizeMediaFileName(attachedMatch[1])
 
     return {
       fileName,
@@ -32,11 +53,31 @@ function extractMediaInfo(messageText) {
     }
   }
 
-  if (/^<media omitted>$/i.test(trimmedText)) {
+  const omittedMatch = trimmedText.match(
+    /^<?(?:(image|video|audio|voice message|document|sticker|gif)|media)\s+omitted>?$/i
+  )
+
+  if (omittedMatch) {
+    const omittedType = omittedMatch[1]?.toLowerCase() ?? 'media'
+    const kind =
+      omittedType === 'image' || omittedType === 'sticker' || omittedType === 'gif'
+        ? 'image'
+        : omittedType === 'video'
+          ? 'video'
+          : omittedType === 'audio' || omittedType === 'voice message'
+            ? 'audio'
+            : omittedType === 'document'
+              ? 'document'
+              : 'unknown'
+    const label =
+      omittedType === 'media'
+        ? 'Media omitted'
+        : `${omittedType.charAt(0).toUpperCase()}${omittedType.slice(1)} omitted`
+
     return {
       fileName: null,
-      kind: 'unknown',
-      label: 'Media omitted',
+      kind,
+      label,
     }
   }
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link, Navigate, useNavigate } from 'react-router'
 import { useAuth } from '../../app/providers/useAuth.js'
@@ -8,12 +8,15 @@ import {
 } from '../../features/chat/model/chatSession.js'
 import {
   clearMediaSession,
+  getMediaEntries,
   getMediaEntry,
   hasMediaInSession,
 } from '../../features/chat/model/mediaSession.js'
 import { MotionReveal } from '../../shared/ui/MotionReveal.jsx'
 import { AppButton } from '../../shared/ui/AppButton.jsx'
 import './ChatPage.scss'
+
+const MotionDiv = motion.div
 
 function renderMediaLabel(message) {
   if (message.media?.fileName) {
@@ -28,26 +31,75 @@ export function ChatPage() {
   const navigate = useNavigate()
   const chatSession = getChatSession()
   const [activeMedia, setActiveMedia] = useState(null)
-
-  if (!chatSession) {
-    return <Navigate to="/upload" replace />
-  }
-
-  const messages = chatSession.messages ?? []
+  const messages = Array.isArray(chatSession?.messages)
+    ? chatSession.messages.filter((message) => message && typeof message === 'object')
+    : []
+  const mediaEntries = getMediaEntries()
   const mediaAvailable = hasMediaInSession()
   const uniqueSenders = [...new Set(messages.map((message) => message.sender).filter(Boolean))]
   const senderSideMap = new Map(
     uniqueSenders.map((sender, index) => [sender, index % 2 === 0 ? 'them' : 'me'])
   )
-  const linkedMediaCount = chatSession.mediaCount ?? 0
-  const renderedMessages = useMemo(
-    () =>
-      messages.map((message) => ({
-        ...message,
-        linkedMedia: message.media?.fileName ? getMediaEntry(message.media.fileName) : null,
-      })),
-    [messages]
-  )
+  const linkedMediaCount = mediaEntries.length
+  const assignedMediaUrls = new Set()
+  const renderedMessages = messages.map((message) => ({
+    ...message,
+    sender: message.sender || 'Unknown sender',
+    date: message.date || 'Unknown date',
+    time: message.time || 'Unknown time',
+    message: typeof message.message === 'string' ? message.message : String(message.message ?? ''),
+    linkedMedia: null,
+  }))
+
+  renderedMessages.forEach((message, index) => {
+    if (!message.media?.fileName) {
+      return
+    }
+
+    const exactMediaEntry = getMediaEntry(message.media.fileName)
+
+    if (!exactMediaEntry || assignedMediaUrls.has(exactMediaEntry.url)) {
+      return
+    }
+
+    assignedMediaUrls.add(exactMediaEntry.url)
+    renderedMessages[index] = {
+      ...message,
+      linkedMedia: exactMediaEntry,
+    }
+  })
+
+  renderedMessages.forEach((message, index) => {
+    if (!message.media || message.linkedMedia) {
+      return
+    }
+
+    const nextMediaEntry =
+      mediaEntries.find(
+        (entry) =>
+          !assignedMediaUrls.has(entry.url) &&
+          (message.media.kind && message.media.kind !== 'unknown'
+            ? entry.kind === message.media.kind
+            : true)
+      ) ?? null
+
+    if (!nextMediaEntry) {
+      return
+    }
+
+    assignedMediaUrls.add(nextMediaEntry.url)
+    renderedMessages[index] = {
+      ...message,
+      linkedMedia: nextMediaEntry,
+    }
+  })
+  const uploadedAtLabel = chatSession?.uploadedAt
+    ? new Date(chatSession.uploadedAt).toLocaleString()
+    : 'Unknown'
+
+  if (!chatSession) {
+    return <Navigate to="/upload" replace />
+  }
 
   const handleLogout = async () => {
     await logout()
@@ -89,7 +141,7 @@ export function ChatPage() {
         </MotionReveal>
 
         <section className="chat-grid">
-          <MotionReveal as="aside" className="chat-sidebar" delay={0.1}>
+          <MotionReveal as="aside" className="chat-sidebar" delay={0.1} mode="enter">
             <p className="chat-sidebar__label">Active workspace</p>
             <h2>{user?.fullName || 'ChatRevive user'}</h2>
             <p>{user?.email}</p>
@@ -98,11 +150,11 @@ export function ChatPage() {
               <span>Messages: {messages.length}</span>
               <span>Media files: {linkedMediaCount}</span>
               <span>Plan: {user?.plan || 'free'}</span>
-              <span>Uploaded: {new Date(chatSession.uploadedAt).toLocaleString()}</span>
+              <span>Uploaded: {uploadedAtLabel}</span>
             </div>
           </MotionReveal>
 
-          <MotionReveal as="section" className="chat-thread" delay={0.16}>
+          <MotionReveal as="section" className="chat-thread" delay={0.16} mode="enter">
             <div className="chat-thread__header">
               <p className="chat-thread__label">Imported transcript</p>
               <h2>WhatsApp-style chat</h2>
@@ -196,13 +248,68 @@ export function ChatPage() {
                 <p>Upload a WhatsApp-exported `.txt` file to see the conversation here.</p>
               </div>
             )}
+
+            {mediaEntries.length > 0 ? (
+              <div className="chat-attachments">
+                <div className="chat-attachments__header">
+                  <p className="chat-thread__label">Uploaded media</p>
+                  <span>{mediaEntries.length} file{mediaEntries.length === 1 ? '' : 's'}</span>
+                </div>
+                <div className="chat-attachments__grid">
+                  {mediaEntries.map((mediaEntry) => (
+                    <div key={mediaEntry.url} className="chat-attachments__item">
+                      {mediaEntry.kind === 'image' ? (
+                        <button
+                          type="button"
+                          className="chat-media-card chat-media-card--image"
+                          onClick={() => setActiveMedia(mediaEntry)}
+                        >
+                          <img src={mediaEntry.url} alt={mediaEntry.fileName} />
+                          <span>{mediaEntry.fileName}</span>
+                        </button>
+                      ) : null}
+
+                      {mediaEntry.kind === 'video' ? (
+                        <div className="chat-media-card chat-media-card--video">
+                          <video controls preload="metadata">
+                            <source src={mediaEntry.url} type={mediaEntry.mimeType} />
+                          </video>
+                          <span>{mediaEntry.fileName}</span>
+                        </div>
+                      ) : null}
+
+                      {mediaEntry.kind === 'audio' ? (
+                        <div className="chat-media-card chat-media-card--audio">
+                          <span>{mediaEntry.fileName}</span>
+                          <audio controls preload="metadata">
+                            <source src={mediaEntry.url} type={mediaEntry.mimeType} />
+                          </audio>
+                        </div>
+                      ) : null}
+
+                      {mediaEntry.kind === 'document' ? (
+                        <a
+                          className="chat-media-card chat-media-card--document"
+                          href={mediaEntry.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <strong>{mediaEntry.fileName}</strong>
+                          <span>Open attachment</span>
+                        </a>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </MotionReveal>
         </section>
       </MotionReveal>
 
       <AnimatePresence>
         {activeMedia ? (
-          <motion.div
+          <MotionDiv
             className="chat-lightbox"
             role="dialog"
             aria-modal="true"
@@ -217,7 +324,7 @@ export function ChatPage() {
               aria-label="Close media viewer"
               onClick={() => setActiveMedia(null)}
             />
-            <motion.div
+            <MotionDiv
               className="chat-lightbox__panel"
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -233,8 +340,8 @@ export function ChatPage() {
               </button>
               <img src={activeMedia.url} alt={activeMedia.fileName} />
               <p>{activeMedia.fileName}</p>
-            </motion.div>
-          </motion.div>
+            </MotionDiv>
+          </MotionDiv>
         ) : null}
       </AnimatePresence>
     </main>

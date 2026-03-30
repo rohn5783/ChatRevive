@@ -12,12 +12,14 @@ import { RegisterPage } from '../pages/register/RegisterPage.jsx'
 import { UploadPage } from '../pages/upload/UploadPage.jsx'
 import { ChatPage } from '../pages/chat/ChatPage.jsx'
 
+const MotionSection = motion.section
+
 function BootScreen() {
   return (
     <main className="app-shell">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
-      <motion.section
+      <MotionSection
         className="boot-card"
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
@@ -25,7 +27,7 @@ function BootScreen() {
       >
         <span className="boot-card__pulse" />
         <p>Restoring your ChatRevive workspace...</p>
-      </motion.section>
+      </MotionSection>
     </main>
   )
 }
