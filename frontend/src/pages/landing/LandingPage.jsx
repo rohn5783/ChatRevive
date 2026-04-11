@@ -245,7 +245,7 @@ export function LandingPage() {
               className="landing-social__link"
               aria-label="Visit ChatRevive on Twitter"
             >
-              <span className="landing-social__icon">
+              <span className="https://x.com/rohitn5783">
                 <TwitterIcon />
               </span>
               <span>Twitter</span>
