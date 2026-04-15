@@ -49,18 +49,18 @@ export function loginUser(payload) {
 }
 
 export function googleSignIn() {
-  return request('/users/google-signin', {
+  return request('/api/users/google-signin', {
     method: 'POST',
     body: JSON.stringify({}),
   })
 }
 
 export function getCurrentUser() {
-  return request('/users/me')
+  return request('/api/users/me')
 }
 
 export function logoutUser() {
-  return request('/users/logout', {
+  return request('/api/users/logout', {
     method: 'POST',
     body: JSON.stringify({}),
   })
