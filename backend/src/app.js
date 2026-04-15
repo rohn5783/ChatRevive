@@ -16,7 +16,7 @@ const corsOptions = {
   origin: [
     'http://localhost:5173', // Local development
     'https://chatrevive.onrender.com', // Production frontend (adjust if different)
-    'https://chat-revive-azure.vercel.app/', // Vercel frontend
+    'https://chat-revive-azure.vercel.app', // Vercel frontend
     // Add other origins as needed
   ],
   credentials: true, // Allow cookies and credentials
