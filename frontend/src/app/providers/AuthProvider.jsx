@@ -7,6 +7,7 @@ import {
   resendOtp,
   verifyOtp,
   googleSignIn,
+  setAuthToken,
 } from '../../features/auth/api/authApi.js'
 import { AuthContext } from './auth-context.js'
 
@@ -24,9 +25,15 @@ export function AuthProvider({ children }) {
 
         if (!ignore) {
           setUser(response.user)
+          // Ensure token is stored if user was found
+          if (response.token) {
+            setAuthToken(response.token)
+          }
         }
-      } catch {
+      } catch (error) {
         if (!ignore) {
+          // Clear token if auth fails
+          setAuthToken(null)
           setUser(null)
         }
       } finally {
