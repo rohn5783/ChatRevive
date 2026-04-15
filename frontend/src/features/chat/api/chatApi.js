@@ -1,10 +1,10 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+const API_BASE_URL = "https://chatrevive.onrender.com"
 
 export async function uploadChatFile(file) {
   const formData = new FormData()
   formData.append('file', file)
 
-  const response = await fetch(`${API_BASE_URL}/chats/upload`, {
+  const response = await fetch(`${API_BASE_URL}/api/chats/upload`, {
     method: 'POST',
     credentials: 'include',
     body: formData,
