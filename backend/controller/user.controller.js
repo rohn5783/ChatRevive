@@ -14,12 +14,15 @@ const createAuthToken = (userId) =>
   jwt.sign({ userId }, getJWTSecret(), { expiresIn: JWT_EXPIRES_IN });
 
 const setAuthCookie = (res, token) => {
-  const isProduction = process.env.NODE_ENV === "production";
+  // Consider production if deployed on render.com or NODE_ENV is production
+  const isProduction = process.env.NODE_ENV === "production" ||
+                      process.env.RENDER ||
+                      process.env.ON_RENDER === 'true';
 
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "lax",
-    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax", // Allow cross-origin in production
+    secure: isProduction, // Secure required for sameSite: "none"
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
