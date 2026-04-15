@@ -6,9 +6,11 @@ import userRoutes from "../routes/user.routes.js";
 import { existsSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import cors from "cors";
 dotenv.config({ quiet: true });
 
-const app = express();
+export const app = express();
+app.use(cors());
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 const projectRoot = path.resolve(currentDirPath, "..", "..");

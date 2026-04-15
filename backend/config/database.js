@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-async function connectDB() {
+export const connectDB = async () => {
   if (!process.env.MONGO_URI) {
     console.warn("MONGO_URI is not configured. Using local auth fallback store.");
     return false;
@@ -19,6 +19,6 @@ async function connectDB() {
     );
     return false;
   }
-}
+};
 
 export default connectDB;
