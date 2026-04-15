@@ -10,7 +10,20 @@ import cors from "cors";
 dotenv.config({ quiet: true });
 
 export const app = express();
-app.use(cors());
+
+// Configure CORS to allow credentials and specific origins
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // Local development
+    'https://chatrevive.onrender.com', // Production frontend (adjust if different)
+    // Add other origins as needed
+  ],
+  credentials: true, // Allow cookies and credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirPath = path.dirname(currentFilePath);
 const projectRoot = path.resolve(currentDirPath, "..", "..");

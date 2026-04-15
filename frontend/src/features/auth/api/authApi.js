@@ -21,28 +21,28 @@ async function request(path, options = {}) {
 }
 
 export function registerUser(payload) {
-  return request('/users/register', {
+  return request('/api/users/register', {
     method: 'POST',
     body: JSON.stringify(payload),
   })
 }
 
 export function verifyOtp(payload) {
-  return request('/users/verify-email', {
+  return request('/api/users/verify-email', {
     method: 'POST',
     body: JSON.stringify(payload),
   })
 }
 
 export function resendOtp(payload) {
-  return request('/users/resend-otp', {
+  return request('/api/users/resend-otp', {
     method: 'POST',
     body: JSON.stringify(payload),
   })
 }
 
 export function loginUser(payload) {
-  return request('/users/login', {
+  return request('/api/users/login', {
     method: 'POST',
     body: JSON.stringify(payload),
   })
