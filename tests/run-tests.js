@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import "./validation/validation.test.js";
+import "./db.test.js";
 import "./parser/whatsAppParser.test.js";
 import "./models/user.model.test.js";
 import "./auth/auth.test.js";

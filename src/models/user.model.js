@@ -115,6 +115,13 @@ const userStorePath = process.env.DATA_STORE_PATH
   : path.resolve(process.cwd(), "data/users.json");
 
 const isMongoConnected = () => mongoose.connection.readyState === 1;
+const shouldUseLocalStore = () =>
+  process.env.NODE_ENV === "test" && !isMongoConnected();
+const requireMongoConnection = () => {
+  if (!isMongoConnected()) {
+    throw new Error("MongoDB connection is required for user data.");
+  }
+};
 
 const ensureUserStore = async () => {
   await fs.mkdir(path.dirname(userStorePath), { recursive: true });
@@ -276,11 +283,17 @@ const UserModel = {
     if (isMongoConnected()) {
       return MongoUserModel.findOne(query);
     }
-    return createLocalFindOneQuery(query);
+    if (shouldUseLocalStore()) {
+      return createLocalFindOneQuery(query);
+    }
+    requireMongoConnection();
   },
   async findById(id) {
     if (isMongoConnected()) {
       return MongoUserModel.findById(id);
+    }
+    if (!shouldUseLocalStore()) {
+      requireMongoConnection();
     }
     const users = await readUsersFromStore();
     const record = users.find((user) => String(user._id) === String(id));
@@ -289,6 +302,9 @@ const UserModel = {
   async create(payload) {
     if (isMongoConnected()) {
       return MongoUserModel.create(payload);
+    }
+    if (!shouldUseLocalStore()) {
+      requireMongoConnection();
     }
 
     const users = await readUsersFromStore();
@@ -328,4 +344,3 @@ const UserModel = {
 };
 
 export default UserModel;
-

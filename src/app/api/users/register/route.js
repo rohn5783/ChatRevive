@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import User from "@/models/user.model.js";
 import { createAuthToken } from "@/lib/auth";
+import { connectDB } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    await connectDB();
     const { fullName, email, password } = await request.json();
 
     if (!fullName || !email || !password) {
@@ -78,4 +80,3 @@ export async function POST(request) {
     );
   }
 }
-

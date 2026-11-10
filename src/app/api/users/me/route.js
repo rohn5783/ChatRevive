@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth";
+import { connectDB } from "@/lib/db";
 
 export async function GET(request) {
   try {
+    await connectDB();
     const user = await getAuthenticatedUser(request);
     if (!user) {
       return NextResponse.json(
@@ -32,4 +34,3 @@ export async function GET(request) {
     );
   }
 }
-

@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node tests/run-tests.js"
+    "test": "node tests/run-tests.js",
+    "migrate:local-users": "node scripts/migrate-local-users.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

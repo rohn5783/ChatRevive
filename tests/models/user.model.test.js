@@ -32,3 +32,24 @@ test("UserModel comparePassword works accurately", async () => {
   assert.equal(wrongMatch, false);
 });
 
+test("UserModel does not save to the local JSON store outside tests", async () => {
+  const originalNodeEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = "production";
+
+  try {
+    await assert.rejects(
+      User.create({
+        fullName: "Mongo Required",
+        email: `mongo_required_${Date.now()}@example.com`,
+        password: "securepassword123",
+      }),
+      /MongoDB connection is required/
+    );
+  } finally {
+    if (originalNodeEnv === undefined) {
+      delete process.env.NODE_ENV;
+    } else {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
+  }
+});

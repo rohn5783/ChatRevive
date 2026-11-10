@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import User from "@/models/user.model.js";
 import { validateOTPInput } from "@/lib/validation";
+import { connectDB } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    await connectDB();
     const body = await request.json().catch(() => ({}));
     const { email, otp } = body;
 
@@ -84,4 +86,3 @@ export async function POST(request) {
     );
   }
 }
-

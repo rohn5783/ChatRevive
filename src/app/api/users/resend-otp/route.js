@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import User from "@/models/user.model.js";
 import { validateEmail } from "@/lib/validation";
 import { sendOTPEmail } from "@/lib/sendEmail";
+import { connectDB } from "@/lib/db";
 
 const OTP_EXPIRY_IN_MINUTES = 10;
 const generateOTP = () => String(Math.floor(100000 + Math.random() * 900000));
 
 export async function POST(request) {
   try {
+    await connectDB();
     const body = await request.json().catch(() => ({}));
     const { email } = body;
 
@@ -66,4 +68,3 @@ export async function POST(request) {
     );
   }
 }
-

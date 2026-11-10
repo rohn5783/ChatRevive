@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth";
 import { createRazorpayOrder } from "@/lib/payment";
+import { connectDB } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    await connectDB();
     const user = await getAuthenticatedUser(request);
     if (!user) {
       return NextResponse.json(

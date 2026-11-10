@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/auth";
-import { processChatUpload } from "@/lib/chatUpload";
+import {
+  persistParsedChatUpload,
+  processChatUpload,
+} from "@/lib/chatUpload";
+import { connectDB } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    await connectDB();
     const user = await getAuthenticatedUser(request);
     if (!user) {
       return NextResponse.json(
@@ -27,6 +32,7 @@ export async function POST(request) {
       user,
       fileName: file.name,
       fileContent: buffer,
+      persist: persistParsedChatUpload,
     });
 
     return NextResponse.json(result.body, { status: result.status });

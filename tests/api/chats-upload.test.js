@@ -69,6 +69,60 @@ test("processChatUpload increments free upload usage on successful parse (4 -> 5
   assert.equal(result.body.messages.length, 1);
 });
 
+test("processChatUpload delegates Mongo persistence before completing an upload", async () => {
+  let persisted;
+  const fakeUser = {
+    _id: "user_persist_123",
+    fullName: "Rahul",
+    email: "rahul@example.com",
+    plan: "free",
+    trialUploadsUsed: 1,
+    trialUploadsLimit: 5,
+    save: async () => {
+      throw new Error("The persistence callback should save the user transactionally");
+    },
+  };
+
+  const result = await processChatUpload({
+    user: fakeUser,
+    fileName: "chat.txt",
+    fileContent: "12/03/26, 9:00 am - Rahul: Hello there!",
+    persist: async (data) => {
+      persisted = data;
+    },
+  });
+
+  assert.equal(result.status, 200);
+  assert.equal(persisted.user, fakeUser);
+  assert.equal(persisted.saveUser, true);
+  assert.equal(persisted.messages.length, 1);
+  assert.equal(fakeUser.trialUploadsUsed, 2);
+});
+
+test("processChatUpload restores free quota when Mongo persistence fails", async () => {
+  const fakeUser = {
+    _id: "user_persist_failure_123",
+    fullName: "Rahul",
+    email: "rahul@example.com",
+    plan: "free",
+    trialUploadsUsed: 1,
+    trialUploadsLimit: 5,
+  };
+
+  await assert.rejects(
+    processChatUpload({
+      user: fakeUser,
+      fileName: "chat.txt",
+      fileContent: "12/03/26, 9:00 am - Rahul: Hello there!",
+      persist: async () => {
+        throw new Error("MongoDB transaction failed");
+      },
+    }),
+    /MongoDB transaction failed/
+  );
+  assert.equal(fakeUser.trialUploadsUsed, 1);
+});
+
 test("processChatUpload rejects non-.txt files", async () => {
   const fakeUser = {
     _id: "user_pdf_123",
@@ -147,4 +201,3 @@ test("processChatUpload enforces quota per-user independently", async () => {
   assert.equal(resB.body.success, true);
   assert.equal(userB.trialUploadsUsed, 2);
 });
-

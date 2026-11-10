@@ -1,28 +1,35 @@
 import mongoose from "mongoose";
 
-let isConnected = false;
+let connectionPromise;
 
 export const connectDB = async () => {
-  if (isConnected || mongoose.connection.readyState === 1) {
+  if (mongoose.connection.readyState === 1) {
     return true;
   }
 
   const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
   if (!uri) {
-    return false;
+    throw new Error("MONGODB_URI or MONGO_URI must be configured.");
   }
 
-  try {
-    const db = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 3000,
-    });
-    isConnected = db.connections[0].readyState === 1;
-    return isConnected;
-  } catch (error) {
-    console.warn("MongoDB connection failed. Using local fallback store:", error.message);
-    return false;
+  if (!connectionPromise) {
+    connectionPromise = mongoose
+      .connect(uri, {
+        serverSelectionTimeoutMS: 3000,
+      })
+      .then(() => {
+        connectionPromise = undefined;
+        return true;
+      })
+      .catch(() => {
+        connectionPromise = undefined;
+        throw new Error(
+          "MongoDB connection failed. Check the database URI and network access settings."
+        );
+      });
   }
+
+  return connectionPromise;
 };
 
 export default connectDB;
-

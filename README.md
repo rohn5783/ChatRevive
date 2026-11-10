@@ -26,7 +26,8 @@
 - **Full Next.js 15 Architecture**:
   - Unified frontend and backend in one Next.js App Router codebase.
   - API Routes: `/api/chats/upload`, `/api/payment/*`, `/api/users/*`.
-  - Database fallback: Uses MongoDB when configured, or seamlessly falls back to local `data/users.json` for zero-dependency local development.
+  - MongoDB stores user accounts, verified payment details, chat imports, conversations, and parsed messages (not the original uploaded text file).
+  - API requests that need persistent data require a working MongoDB connection; they do not silently fall back to local JSON files.
 
 ---
 
@@ -59,7 +60,9 @@ Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
-Working demo credentials are pre-configured in `.env` for instant local testing.
+Set `MONGODB_URI` to your MongoDB Atlas connection string and replace the demo JWT and payment secrets with your own values. Google sign-in is not configured. Keep `.env` private and never commit it.
+
+Existing local user records in `data/users.json` are not moved automatically. After configuring a secure MongoDB URI, run `npm run migrate:local-users` to copy them into MongoDB without replacing existing accounts. The JSON file is left untouched.
 
 ### 4. Run Development Server
 ```bash
@@ -73,7 +76,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ChatRevive includes a comprehensive test suite covering WhatsApp parsing, validations, user authentication, 5-upload quota enforcement, Razorpay payments, and full E2E user lifecycle.
 
-Run all 38 tests:
+Run all 42 tests:
 ```bash
 npm test
 ```
