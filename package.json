@@ -1,29 +1,40 @@
 {
   "name": "chatrevive",
-  "version": "1.0.0",
-  "description": "ChatRevive full-stack app",
-  "main": "backend/server.js",
-  "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frontend --include=dev && npm run build --prefix frontend",
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "version": "2.0.0",
+  "description": "ChatRevive - WhatsApp Chat Archiver & Viewer built with Next.js",
+  "main": "server.js",
   "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "node tests/run-tests.js"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cookie": "^1.0.2",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "framer-motion": "^12.38.0",
     "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^1.16.0",
     "mongoose": "^9.3.1",
     "multer": "^2.1.1",
+    "next": "^15.2.1",
     "nodemailer": "^8.0.3",
-    "nodemon": "^3.1.14"
+    "razorpay": "^2.9.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.9.3"
   }
 }

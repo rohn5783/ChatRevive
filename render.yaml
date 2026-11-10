@@ -3,5 +3,10 @@ services:
     name: chatrevive
     env: node
     rootDir: .
-    buildCommand: npm install --prefix backend && npm install --prefix frontend --include=dev && npm run build --prefix frontend
-    startCommand: node backend/server.js
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000

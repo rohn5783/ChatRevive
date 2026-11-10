@@ -1,0 +1,17 @@
+services:
+  chatrevive:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatrevive_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - chatrevive_data:/app/data
+
+volumes:
+  chatrevive_data:
+
