@@ -2,6 +2,8 @@
 
 > **WhatsApp Chat Archiver & Viewer** built with **Next.js 15 App Router**, styled with authentic WhatsApp color themes, **Razorpay** payment integration, and a **5 free chat uploads** quota system.
 
+🌐 **Live app:** [chat-revive-seven.vercel.app](https://chat-revive-seven.vercel.app/)
+
 ---
 
 ## 🚀 Features
